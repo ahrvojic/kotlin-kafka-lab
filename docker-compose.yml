@@ -1,0 +1,8 @@
+services:
+  basic-consumer:
+    build: basic-consumer
+    image: basic-consumer
+
+  basic-producer:
+    build: basic-producer
+    image: basic-producer
