@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class BasicProducerApp : CommandLineRunner {
+class BasicProducerApp(private val producer: BasicProducer) : CommandLineRunner {
     override fun run(vararg args: String) {
-        TODO("Not yet implemented")
+        producer.send("", "")
     }
 }
 
