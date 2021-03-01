@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class BasicConsumer() {
-    @KafkaListener(topics = ["topic"], groupId = "group-id")
+    @KafkaListener(topics = ["basic-stream"])
     fun consume(message: String) {
         // TODO
     }
