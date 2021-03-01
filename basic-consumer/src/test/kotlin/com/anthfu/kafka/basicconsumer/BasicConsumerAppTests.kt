@@ -1,10 +1,10 @@
-package com.anthfu.kafka.basicproducer
+package com.anthfu.kafka.basicconsumer
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class BasicProducerApplicationTests {
+class BasicConsumerAppTests {
 
     @Test
     fun contextLoads() {
