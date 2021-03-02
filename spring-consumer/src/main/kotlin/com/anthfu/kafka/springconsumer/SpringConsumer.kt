@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class SpringConsumer(val props: SpringConsumerProps) {
-    var logger: Logger = LoggerFactory.getLogger(SpringConsumer::class.java)
+    val logger: Logger = LoggerFactory.getLogger(SpringConsumer::class.java)
 
     @KafkaListener(topics = ["#{springConsumer.props.topic}'}"])
     fun receive(message: String) {

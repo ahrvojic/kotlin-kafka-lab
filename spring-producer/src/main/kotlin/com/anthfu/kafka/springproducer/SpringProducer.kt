@@ -10,7 +10,7 @@ class SpringProducer(
     private val kafkaTemplate: KafkaTemplate<String, String>,
     private val props: SpringProducerProps
 ) {
-    var logger: Logger = LoggerFactory.getLogger(SpringProducer::class.java)
+    val logger: Logger = LoggerFactory.getLogger(SpringProducer::class.java)
 
     fun send(message: String) {
         logger.info("Sent: $message")
