@@ -15,8 +15,8 @@
     </properties>
 
     <modules>
-        <module>basic-consumer</module>
-        <module>basic-producer</module>
+        <module>spring-consumer</module>
+        <module>spring-producer</module>
     </modules>
 
 </project>

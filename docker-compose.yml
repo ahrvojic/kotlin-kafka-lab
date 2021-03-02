@@ -1,8 +1,8 @@
 services:
-  basic-consumer:
-    build: basic-consumer
-    image: basic-consumer
+  spring-consumer:
+    build: spring-consumer
+    image: spring-consumer
 
-  basic-producer:
-    build: basic-producer
-    image: basic-producer
+  spring-producer:
+    build: spring-producer
+    image: spring-producer
