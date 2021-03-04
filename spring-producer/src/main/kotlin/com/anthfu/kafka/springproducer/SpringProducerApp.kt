@@ -35,7 +35,7 @@ class SpringProducer(
 class SpringProducerApp(private val producer: SpringProducer) : CommandLineRunner {
     override fun run(vararg args: String) {
         repeat(10) {
-            producer.send(it.toString())
+            producer.send("Message $it")
         }
     }
 }
