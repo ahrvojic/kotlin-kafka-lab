@@ -34,8 +34,8 @@ class SpringProducer(
 @ConfigurationPropertiesScan
 class SpringProducerApp(private val producer: SpringProducer) : CommandLineRunner {
     override fun run(vararg args: String) {
-        repeat(10) {
-            producer.send("Message $it")
+        repeat(1000) {
+            producer.send(it.toString())
         }
     }
 }
