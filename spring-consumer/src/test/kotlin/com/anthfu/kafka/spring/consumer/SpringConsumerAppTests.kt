@@ -1,4 +1,4 @@
-package com.anthfu.kafka.springproducer
+package com.anthfu.kafka.spring.consumer
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -8,10 +8,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(
-    classes = [SpringProducerApp::class],
+    classes = [SpringConsumerApp::class],
     initializers = [ConfigDataApplicationContextInitializer::class]
 )
-class SpringProducerAppTests {
+class SpringConsumerAppTests {
     @Test
     fun contextLoads() {}
 }

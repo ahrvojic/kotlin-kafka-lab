@@ -1,4 +1,4 @@
-package com.anthfu.kafka.springproducer
+package com.anthfu.kafka.spring.producer
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
