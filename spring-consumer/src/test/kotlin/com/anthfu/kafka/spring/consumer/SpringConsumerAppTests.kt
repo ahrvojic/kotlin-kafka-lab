@@ -13,5 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 )
 class SpringConsumerAppTests {
     @Test
-    fun contextLoads() {}
+    fun contextLoads() {
+        // Ensure service starts up properly
+    }
 }
