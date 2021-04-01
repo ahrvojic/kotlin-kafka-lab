@@ -1,0 +1,9 @@
+app:
+  topic: ${TOPIC}
+
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: ${BOOTSTRAP_SERVERS}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer

@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "app.topic",
+      "type": "java.lang.String",
+      "description": "Kafka topic to consume from."
+    }
+  ]
+}

@@ -1,10 +1,8 @@
 services:
   spring-consumer:
-    build: spring-consumer
     image: spring-consumer
     network_mode: host
 
   spring-producer:
-    build: spring-producer
     image: spring-producer
     network_mode: host
