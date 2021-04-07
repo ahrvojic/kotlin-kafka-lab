@@ -28,44 +28,32 @@ class SpringKafkaClientIT {
         .withNetwork(network)
         .withNetworkAliases("kafka")
 
+    @Container
+    private val producer = GenericContainer<Nothing>(producerImage).apply {
+        withNetwork(network)
+        withEnv("APP_TOPIC", "spring-kafka-test")
+        withEnv("SPRING_KAFKA_PRODUCER_BOOTSTRAPSERVERS", "kafka:9092")
+        withLogConsumer(Slf4jLogConsumer(logger))
+        withMinimumRunningDuration(Duration.ofMinutes(1))
+        dependsOn(kafka)
+    }
+
+    @Container
+    private val consumer = GenericContainer<Nothing>(consumerImage).apply {
+        withNetwork(network)
+        withEnv("APP_TOPIC", "spring-kafka-test")
+        withEnv("SPRING_KAFKA_CONSUMER_BOOTSTRAPSERVERS", "kafka:9092")
+        withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "spring-consumers")
+        withLogConsumer(Slf4jLogConsumer(logger))
+        withMinimumRunningDuration(Duration.ofMinutes(1))
+        dependsOn(kafka)
+    }
+
     @Test
     fun integration() {
         val admin = AdminClient.create(mapOf(BOOTSTRAP_SERVERS_CONFIG to kafka.bootstrapServers))
-        admin.createTopics(listOf(NewTopic("spring-kafka-test", 1, 1)))
-
-        val producer = GenericContainer<Nothing>(producerImage).apply {
-            withNetwork(network)
-            withEnv("APP_TOPIC", "spring-kafka-test")
-            withEnv("SPRING_KAFKA_PRODUCER_BOOTSTRAPSERVERS", "kafka:9092")
-            withLogConsumer(Slf4jLogConsumer(logger))
-            withMinimumRunningDuration(Duration.ofMinutes(1))
-            dependsOn(kafka)
-        }
-
-        val consumer = GenericContainer<Nothing>(consumerImage).apply {
-            withNetwork(network)
-            withEnv("APP_TOPIC", "spring-kafka-test")
-            withEnv("SPRING_KAFKA_CONSUMER_BOOTSTRAPSERVERS", "kafka:9092")
-            withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "spring-consumers")
-            withLogConsumer(Slf4jLogConsumer(logger))
-            withMinimumRunningDuration(Duration.ofMinutes(1))
-            dependsOn(kafka)
-        }
-
-        producer.start()
-        consumer.start()
-
-        assert(kafka.isRunning)
-        assert(producer.isRunning)
-        assert(consumer.isRunning)
-
         val topics = admin.listTopics().names().get()
-
         assert("spring-kafka-test" in topics)
-
         admin.close()
-
-        producer.stop()
-        consumer.stop()
     }
 }
