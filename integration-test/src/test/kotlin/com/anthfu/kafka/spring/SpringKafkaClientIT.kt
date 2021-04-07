@@ -2,8 +2,8 @@ package com.anthfu.kafka.spring
 
 import org.apache.kafka.clients.admin.AdminClient
 import org.apache.kafka.clients.admin.AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG
-import org.apache.kafka.clients.admin.NewTopic
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.KafkaContainer
@@ -15,6 +15,7 @@ import org.testcontainers.utility.DockerImageName
 import java.time.Duration
 
 @Testcontainers
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SpringKafkaClientIT {
     private val kafkaImage = DockerImageName.parse("confluentinc/cp-kafka:latest")
     private val producerImage = DockerImageName.parse("spring-producer:1.0-SNAPSHOT")
@@ -50,7 +51,7 @@ class SpringKafkaClientIT {
     }
 
     @Test
-    fun integration() {
+    fun `Verify message production and consumption`() {
         val admin = AdminClient.create(mapOf(BOOTSTRAP_SERVERS_CONFIG to kafka.bootstrapServers))
         val topics = admin.listTopics().names().get()
         assert("spring-kafka-test" in topics)
