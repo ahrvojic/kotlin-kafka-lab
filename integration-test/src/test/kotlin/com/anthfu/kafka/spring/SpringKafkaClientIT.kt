@@ -36,22 +36,24 @@ class SpringKafkaClientIT {
         val producer = GenericContainer<Nothing>(producerImage).apply {
             withNetwork(network)
             withEnv("APP_TOPIC", "spring-kafka-test")
-            withEnv("SPRING_KAFKA_PRODUCER_BOOSTRAP-SERVERS", "kafka:9092")
+            withEnv("SPRING_KAFKA_PRODUCER_BOOTSTRAPSERVERS", "kafka:9092")
             withLogConsumer(Slf4jLogConsumer(logger))
             withMinimumRunningDuration(Duration.ofMinutes(1))
+            dependsOn(kafka)
         }
 
         val consumer = GenericContainer<Nothing>(consumerImage).apply {
             withNetwork(network)
             withEnv("APP_TOPIC", "spring-kafka-test")
-            withEnv("SPRING_KAFKA_CONSUMER_BOOSTRAP-SERVERS", "kafka:9092")
-            withEnv("SPRING_KAFKA_CONSUMER_GROUP-ID", "spring-consumers")
+            withEnv("SPRING_KAFKA_CONSUMER_BOOTSTRAPSERVERS", "kafka:9092")
+            withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "spring-consumers")
             withLogConsumer(Slf4jLogConsumer(logger))
             withMinimumRunningDuration(Duration.ofMinutes(1))
+            dependsOn(kafka)
         }
 
-        consumer.start()
         producer.start()
+        consumer.start()
 
         assert(kafka.isRunning)
         assert(producer.isRunning)
