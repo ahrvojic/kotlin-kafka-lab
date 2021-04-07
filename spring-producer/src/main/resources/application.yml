@@ -1,9 +1,9 @@
 app:
-  topic: ${TOPIC}
+  topic: test-topic
 
 spring:
   kafka:
     producer:
-      bootstrap-servers: ${BOOTSTRAP_SERVERS}
+      bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer

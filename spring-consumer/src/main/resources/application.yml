@@ -1,11 +1,11 @@
 app:
-  topic: ${TOPIC}
+  topic: test-topic
 
 spring:
   kafka:
     consumer:
-      bootstrap-servers: ${BOOTSTRAP_SERVERS}
-      group-id: ${GROUP_ID}
+      bootstrap-servers: localhost:9092
+      group-id: spring-consumers
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     listener:
