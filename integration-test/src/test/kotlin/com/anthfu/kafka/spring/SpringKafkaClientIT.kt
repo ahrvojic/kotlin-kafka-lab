@@ -1,5 +1,7 @@
 package com.anthfu.kafka.spring
 
+import org.apache.kafka.clients.admin.AdminClient
+import org.apache.kafka.clients.admin.AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG
 import org.junit.jupiter.api.Test
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.KafkaContainer
@@ -38,5 +40,12 @@ class SpringKafkaClientIT {
 
         producer.start()
         consumer.start()
+
+        assert(kafka.isRunning)
+        assert(producer.isRunning)
+        assert(consumer.isRunning)
+
+        val admin = AdminClient.create(mapOf(BOOTSTRAP_SERVERS_CONFIG to kafka.bootstrapServers))
+        admin.listTopics()
     }
 }
