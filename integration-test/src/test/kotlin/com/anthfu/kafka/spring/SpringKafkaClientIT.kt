@@ -17,7 +17,7 @@ import java.time.Duration
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SpringKafkaClientIT {
-    private val kafkaImage = DockerImageName.parse("confluentinc/cp-kafka:latest")
+    private val kafkaImage = DockerImageName.parse("confluentinc/cp-kafka:6.1.1")
     private val producerImage = DockerImageName.parse("spring-producer:1.0-SNAPSHOT")
     private val consumerImage = DockerImageName.parse("spring-consumer:1.0-SNAPSHOT")
 
