@@ -1,7 +1,5 @@
 package com.anthfu.kafka.spring
 
-import org.apache.kafka.clients.admin.AdminClient
-import org.apache.kafka.clients.admin.AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.slf4j.LoggerFactory
@@ -10,11 +8,10 @@ import org.testcontainers.containers.KafkaContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.output.Slf4jLogConsumer
 import org.testcontainers.containers.startupcheck.IndefiniteWaitOneShotStartupCheckStrategy
-import org.testcontainers.containers.startupcheck.MinimumDurationRunningStartupCheckStrategy
+import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
-import java.time.Duration
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -39,7 +36,7 @@ class SpringKafkaClientIT {
         withEnv("SPRING_KAFKA_CONSUMER_BOOTSTRAPSERVERS", "kafka:9092")
         withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "spring-consumers")
         withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-consumer"))
-        withStartupCheckStrategy(MinimumDurationRunningStartupCheckStrategy(Duration.ofSeconds(1)))
+        waitingFor(Wait.forLogMessage(".*partitions assigned.*\\n", 1))
         dependsOn(kafka)
     }
 
@@ -55,8 +52,7 @@ class SpringKafkaClientIT {
 
     @Test
     fun `Verify message production and consumption`() {
-        val admin = AdminClient.create(mapOf(BOOTSTRAP_SERVERS_CONFIG to kafka.bootstrapServers))
-        assert("spring-kafka-test" in admin.listTopics().names().get())
-        admin.close()
+        assert(producer.logs.contains("Sent: 999"))
+        assert(consumer.logs.contains("Received: 999"))
     }
 }
