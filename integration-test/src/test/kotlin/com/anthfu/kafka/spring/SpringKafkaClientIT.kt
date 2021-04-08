@@ -13,6 +13,7 @@ import org.testcontainers.containers.output.Slf4jLogConsumer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
+import java.time.Duration
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -35,6 +36,7 @@ class SpringKafkaClientIT {
         withEnv("APP_TOPIC", "spring-kafka-test")
         withEnv("SPRING_KAFKA_PRODUCER_BOOTSTRAPSERVERS", "kafka:9092")
         withLogConsumer(Slf4jLogConsumer(logger))
+        withMinimumRunningDuration(Duration.ofMinutes(1))
         dependsOn(kafka)
     }
 
@@ -45,16 +47,15 @@ class SpringKafkaClientIT {
         withEnv("SPRING_KAFKA_CONSUMER_BOOTSTRAPSERVERS", "kafka:9092")
         withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "spring-consumers")
         withLogConsumer(Slf4jLogConsumer(logger))
+        withMinimumRunningDuration(Duration.ofMinutes(1))
         dependsOn(kafka)
     }
 
     @Test
     fun `Verify message production and consumption`() {
         val admin = AdminClient.create(mapOf(BOOTSTRAP_SERVERS_CONFIG to kafka.bootstrapServers))
-
         admin.createTopics(listOf(NewTopic("spring-kafka-test", 1,1)))
         assert("spring-kafka-test" in admin.listTopics().names().get())
-
         admin.close()
     }
 }
