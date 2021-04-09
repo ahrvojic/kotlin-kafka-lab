@@ -15,7 +15,7 @@ data class Config(
 
 @Component
 class SpringConsumer(val config: Config) {
-    val logger: Logger = LoggerFactory.getLogger(SpringConsumer::class.java)
+    val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     @KafkaListener(topics = ["#{springConsumer.config.topic}"])
     fun receive(message: String) {
