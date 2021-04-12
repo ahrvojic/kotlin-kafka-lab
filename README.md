@@ -15,7 +15,8 @@ The **integration-tests** module is organized by technology stack, with tests im
 
 ## Requirements
 
-* A full local installation of [Docker](https://www.docker.com/products/docker-desktop) that includes Docker Compose if you'd like to run services standalone.
+* A full local installation of [Docker Desktop](https://www.docker.com/products/docker-desktop). It includes Docker Compose if you'd like to run services standalone.
+* JDK 11+
 
 ## Build
 
@@ -44,4 +45,4 @@ $ cd kotlin-kafka-lab
 $ docker-compose up -d --scale spring-consumer=3
 ```
 
-This will bring up a `spring-producer` and three `spring-consumer` instances in the same consumer group.
+This will bring up a `spring-producer` and three `spring-consumer` instances in the same consumer group. The topic will be created automatically by default, and the producer will immediately begin sending messages. You can then visit `localhost:9021` to see the messages and data flow graphs in Confluent Control Center.
