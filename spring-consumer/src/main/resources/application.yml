@@ -1,10 +1,9 @@
-app:
-  topic: test-topic
-
 spring:
+  application:
+    name: spring-consumer
   kafka:
+    bootstrap-servers: localhost:9092
     consumer:
-      bootstrap-servers: localhost:9092
       group-id: spring-consumers
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer

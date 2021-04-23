@@ -7,8 +7,12 @@ When integrating multiple complex technologies, especially in a secondary langua
 ## Examples by Technology Stack
 
 ### Spring Kafka + Spring Boot
-* **spring-producer**: a basic Kafka string message producer
-* **spring-consumer**: a basic Kafka string message consumer
+* **spring-producer**: a basic string message producer
+* **spring-consumer**: a basic string message consumer
+
+### Kafka Streams + Spring Cloud + Spring Boot
+
+* **spring-streams**: a basic string stream processor
 
 ## Integration Testing
 The **integration-tests** module is organized by technology stack, with tests implemented using [Testcontainers](https://testcontainers.org) and [JUnit](https://junit.org).
@@ -26,6 +30,14 @@ All modules and Docker images can be built in one shot with the following:
 $ cd kotlin-kafka-lab
 $ ./mvnw clean install
 ```
+
+To rebuild the images after making changes:
+
+```shell
+$ ./mvnw package
+```
+
+You _will_ need to rebuild the images before running the integration tests if any changes are made to the clients.
 
 ## Standalone Run
 

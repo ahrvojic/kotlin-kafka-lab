@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: spring-streams
+  cloud:
+    stream:
+      bindings:
+        increment-in-0:
+          destination: test-topic
+        increment-out-0:
+          destination: test-topic-out
+      kafka:
+        streams:
+          binder:
+            configuration:
+              default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+              default.value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+  kafka:
+    bootstrap-servers: localhost:9092

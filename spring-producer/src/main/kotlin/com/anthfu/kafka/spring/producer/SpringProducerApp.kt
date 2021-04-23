@@ -2,11 +2,9 @@ package com.anthfu.kafka.spring.producer
 
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-@ConfigurationPropertiesScan
 class SpringProducerApp(private val producer: SpringProducer) : CommandLineRunner {
     override fun run(vararg args: String) {
         repeat(1000) {

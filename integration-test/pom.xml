@@ -30,6 +30,11 @@
             <version>${kotlin-kafka-lab.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.anthfu.kafka</groupId>
+            <artifactId>spring-streams</artifactId>
+            <version>${kotlin-kafka-lab.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
             <version>${kafka.version}</version>
@@ -87,7 +92,6 @@
 
     <build>
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
-
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>

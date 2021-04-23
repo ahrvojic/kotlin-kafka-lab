@@ -15,10 +15,11 @@ import org.testcontainers.utility.DockerImageName
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SpringKafkaClientIT {
+class SpringKafkaStreamsIT {
     private val kafkaImage = DockerImageName.parse("confluentinc/cp-kafka:6.1.1")
     private val producerImage = DockerImageName.parse("spring-producer:1.0-SNAPSHOT")
     private val consumerImage = DockerImageName.parse("spring-consumer:1.0-SNAPSHOT")
+    private val streamsImage = DockerImageName.parse("spring-streams:1.0-SNAPSHOT")
 
     private val logger = LoggerFactory.getLogger(javaClass)
     private val kafkaNetwork = Network.newNetwork()
@@ -43,14 +44,26 @@ class SpringKafkaClientIT {
     private val producer = GenericContainer<Nothing>(producerImage).apply {
         withNetwork(kafkaNetwork)
         withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
+        withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "test-topic-in")
         withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-producer"))
         withStartupCheckStrategy(IndefiniteWaitOneShotStartupCheckStrategy())
+        dependsOn(consumer)
+    }
+
+    @Container
+    private val streams = GenericContainer<Nothing>(streamsImage).apply {
+        withNetwork(kafkaNetwork)
+        withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
+        withEnv("SPRING_CLOUD_STREAM_BINDINGS_INCREMENTIN0_DESTINATION", "test-topic-in")
+        withEnv("SPRING_CLOUD_STREAM_BINDINGS_INCREMENTOUT0_DESTINATION", "test-topic")
+        withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-streams"))
         dependsOn(consumer)
     }
 
     @Test
     fun `Verify message production and consumption`() {
         assert(producer.logs.contains("Sent: 999"))
-        assert(consumer.logs.contains("Received: 999"))
+        assert(streams.logs.contains("Processed: 999 -> 1000"))
+        assert(consumer.logs.contains("Received: 1000"))
     }
 }
