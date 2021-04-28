@@ -1,0 +1,12 @@
+services:
+  spring-consumer:
+    environment:
+      - SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC=test-topic-out
+
+  spring-producer:
+    environment:
+      - SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC=test-topic-in
+
+  spring-streams:
+    image: spring-streams:1.0-SNAPSHOT
+    network_mode: host

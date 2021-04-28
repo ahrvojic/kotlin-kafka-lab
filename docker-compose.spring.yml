@@ -1,8 +1,8 @@
 services:
   spring-consumer:
-    image: spring-consumer
+    image: spring-consumer:1.0-SNAPSHOT
     network_mode: host
 
   spring-producer:
-    image: spring-producer
+    image: spring-producer:1.0-SNAPSHOT
     network_mode: host

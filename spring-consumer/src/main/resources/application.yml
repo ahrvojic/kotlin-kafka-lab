@@ -9,3 +9,5 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     listener:
       concurrency: 1
+    template:
+      default-topic: test-topic

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 class SpringConsumer {
     val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    @KafkaListener(topics = ["test-topic"])
+    @KafkaListener(topics = ["#{'\${spring.kafka.template.default-topic}'}"])
     fun receive(message: String) {
         logger.info("Received: $message")
     }

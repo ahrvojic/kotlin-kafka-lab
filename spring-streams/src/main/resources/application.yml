@@ -5,7 +5,7 @@ spring:
     stream:
       bindings:
         increment-in-0:
-          destination: test-topic
+          destination: test-topic-in
         increment-out-0:
           destination: test-topic-out
       kafka:
