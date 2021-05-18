@@ -10,4 +10,4 @@ spring:
     listener:
       concurrency: 1
     template:
-      default-topic: test-topic
+      default-topic: spring-stream

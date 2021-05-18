@@ -35,7 +35,7 @@ class SpringKafkaStreamsIT {
         withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
         withEnv("SPRING_KAFKA_CONSUMER_AUTOOFFSETRESET", "earliest")
         withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "spring-consumers")
-        withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "test-topic-out")
+        withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "spring-stream-out")
         withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-consumer"))
         waitingFor(Wait.forLogMessage(".*partitions assigned.*\\n", 1))
         dependsOn(kafka)
@@ -45,7 +45,7 @@ class SpringKafkaStreamsIT {
     private val producer = GenericContainer<Nothing>(producerImage).apply {
         withNetwork(kafkaNetwork)
         withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
-        withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "test-topic-in")
+        withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "spring-stream-in")
         withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-producer"))
         withStartupCheckStrategy(IndefiniteWaitOneShotStartupCheckStrategy())
         dependsOn(consumer)
