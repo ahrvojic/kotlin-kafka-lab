@@ -1,7 +1,6 @@
 package com.anthfu.kafka.spring.streams
 
 import org.apache.kafka.streams.kstream.KStream
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -10,7 +9,7 @@ import java.util.function.Function
 
 @SpringBootApplication
 class SpringStreamsApp {
-    val logger: Logger = LoggerFactory.getLogger(javaClass)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @Bean
     fun increment(): Function<KStream<String, String>, KStream<String, String>> = Function {

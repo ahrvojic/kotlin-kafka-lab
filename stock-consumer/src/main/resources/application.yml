@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: stock-consumer
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: stock-consumers
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      concurrency: 1
+    template:
+      default-topic: stock-stream

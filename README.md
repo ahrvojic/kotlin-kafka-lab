@@ -2,17 +2,22 @@
 
 ## Goal
 
-When integrating multiple complex technologies, especially in a secondary language, it's often very helpful to see full implementations and even their runtime behavior. To that end, this is a collection of self-contained Kafka client examples in Kotlin intended for local experimentation.
+When integrating multiple complex technologies, especially in a secondary language, it's often very helpful to see full implementations and even their runtime behavior. To that end, this is a collection of self-contained Kafka clients in Kotlin intended for local experimentation.
 
-## Examples by Technology Stack
+## Clients by Technology Stack
+
+### Kafka Client + Spring Boot
+
+* **stock-producer**
+* **stock-consumer**
 
 ### Spring Kafka + Spring Boot
-* **spring-producer**: a basic string message producer
-* **spring-consumer**: a basic string message consumer
+* **spring-producer**
+* **spring-consumer**
 
 ### Kafka Streams + Spring Cloud + Spring Boot
 
-* **spring-streams**: a basic string stream processor
+* **spring-streams**
 
 ## Integration Testing
 The **integration-tests** module is organized by technology stack, with tests implemented using [Testcontainers](https://testcontainers.org) and [JUnit](https://junit.org).

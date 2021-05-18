@@ -10,11 +10,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.anthfu.kafka</groupId>
+    <groupId>com.anthfu.kafka.spring</groupId>
     <artifactId>spring-consumer</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>spring-consumer</name>
-    <description>Spring Boot Kafka consumer</description>
+    <description>Spring Kafka consumer</description>
 
     <properties>
         <java.version>11</java.version>
@@ -41,11 +41,6 @@
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
 
         <!-- test -->
         <dependency>
@@ -67,8 +62,8 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -80,7 +75,7 @@
                     <image>
                         <name>${project.name}:${project.version}</name>
                         <env>
-                            <BP_JVM_VERSION>11</BP_JVM_VERSION>
+                            <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
                         </env>
                     </image>
                 </configuration>
@@ -95,23 +90,6 @@
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>${kotlin.version}</version>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>test-compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <configuration>
                     <args>
                         <arg>-Xjsr305=strict</arg>
@@ -119,7 +97,6 @@
                     <compilerPlugins>
                         <plugin>spring</plugin>
                     </compilerPlugins>
-                    <jvmTarget>1.8</jvmTarget>
                 </configuration>
                 <dependencies>
                     <dependency>

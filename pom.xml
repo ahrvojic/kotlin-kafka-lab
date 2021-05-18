@@ -18,6 +18,8 @@
         <module>spring-consumer</module>
         <module>spring-producer</module>
         <module>spring-streams</module>
+        <module>stock-consumer</module>
+        <module>stock-producer</module>
         <module>integration-test</module>
     </modules>
 

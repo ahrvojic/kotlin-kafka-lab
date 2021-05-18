@@ -1,0 +1,8 @@
+services:
+  stock-consumer:
+    image: stock-consumer:1.0-SNAPSHOT
+    network_mode: host
+
+  stock-producer:
+    image: stock-producer:1.0-SNAPSHOT
+    network_mode: host
