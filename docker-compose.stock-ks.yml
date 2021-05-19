@@ -1,0 +1,12 @@
+services:
+  stock-consumer:
+    environment:
+      - SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC=stock-stream-out
+
+  stock-producer:
+    environment:
+      - SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC=stock-stream-in
+
+  stock-streams:
+    image: stock-streams:1.0-SNAPSHOT
+    network_mode: host

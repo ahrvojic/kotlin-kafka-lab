@@ -1,4 +1,4 @@
-package com.anthfu.kafka.spring
+package com.anthfu.kafka.stock
 
 import com.anthfu.kafka.util.createTopicCmd
 import org.junit.jupiter.api.Test
@@ -18,11 +18,11 @@ import kotlin.test.assertEquals
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SpringKafkaStreamsIT {
+class StockKafkaStreamsIT {
     private val kafkaImage = DockerImageName.parse("confluentinc/cp-kafka:6.1.1")
-    private val producerImage = DockerImageName.parse("spring-producer:1.0-SNAPSHOT")
-    private val consumerImage = DockerImageName.parse("spring-consumer:1.0-SNAPSHOT")
-    private val streamsImage = DockerImageName.parse("spring-streams:1.0-SNAPSHOT")
+    private val producerImage = DockerImageName.parse("stock-producer:1.0-SNAPSHOT")
+    private val consumerImage = DockerImageName.parse("stock-consumer:1.0-SNAPSHOT")
+    private val streamsImage = DockerImageName.parse("stock-streams:1.0-SNAPSHOT")
 
     private val logger = LoggerFactory.getLogger(javaClass)
     private val kafkaNetwork = Network.newNetwork()
@@ -36,35 +36,35 @@ class SpringKafkaStreamsIT {
         withNetwork(kafkaNetwork)
         withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
         withEnv("SPRING_KAFKA_CONSUMER_AUTOOFFSETRESET", "earliest")
-        withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "spring-consumers")
-        withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "spring-stream-out")
-        withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-consumer"))
-        waitingFor(Wait.forLogMessage(".*partitions assigned.*\\n", 1))
+        withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "stock-consumers")
+        withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "stock-stream-out")
+        withLogConsumer(Slf4jLogConsumer(logger).withPrefix("stock-consumer"))
+        waitingFor(Wait.forLogMessage(".*Resetting offset for partition.*\\n", 1))
         dependsOn(kafka)
     }
 
     private val producer = GenericContainer<Nothing>(producerImage).apply {
         withNetwork(kafkaNetwork)
         withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
-        withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "spring-stream-in")
-        withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-producer"))
+        withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "stock-stream-in")
+        withLogConsumer(Slf4jLogConsumer(logger).withPrefix("stock-producer"))
         withStartupCheckStrategy(IndefiniteWaitOneShotStartupCheckStrategy())
         dependsOn(kafka)
     }
 
     private val streams = GenericContainer<Nothing>(streamsImage).apply {
         withNetwork(kafkaNetwork)
-        withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
-        withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-streams"))
+        withEnv("SPRING_KAFKA_STREAMS_BOOTSTRAPSERVERS", "kafka:9092")
+        withLogConsumer(Slf4jLogConsumer(logger).withPrefix("stock-streams"))
         dependsOn(consumer)
     }
 
     @Test
     fun `Verify message production and consumption`() {
-        val t1 = kafka.execInContainer(*createTopicCmd("spring-stream-in"))
+        val t1 = kafka.execInContainer(*createTopicCmd("stock-stream-in"))
         assertEquals(0, t1.exitCode)
 
-        val t2 = kafka.execInContainer(*createTopicCmd("spring-stream-out"))
+        val t2 = kafka.execInContainer(*createTopicCmd("stock-stream-out"))
         assertEquals(0, t2.exitCode)
 
         producer.start()

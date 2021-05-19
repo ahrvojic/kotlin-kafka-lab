@@ -1,0 +1,13 @@
+app:
+  topic-in: stock-stream-in
+  topic-out: stock-stream-out
+
+spring:
+  application:
+    name: stock-streams
+  kafka:
+    streams:
+      application-id: stock-streams
+      bootstrap-servers: localhost:9092
+  main:
+    allow-bean-definition-overriding: true

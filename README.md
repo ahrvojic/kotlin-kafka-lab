@@ -12,8 +12,13 @@ When integrating multiple complex technologies, especially in a secondary langua
 * **stock-consumer**
 
 ### Spring Kafka + Spring Boot
+
 * **spring-producer**
 * **spring-consumer**
+
+### Kafka Streams + Spring Kafka + Spring Boot
+
+* **stock-streams**
 
 ### Kafka Streams + Spring Cloud + Spring Boot
 

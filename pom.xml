@@ -20,6 +20,7 @@
         <module>spring-streams</module>
         <module>stock-consumer</module>
         <module>stock-producer</module>
+        <module>stock-streams</module>
         <module>integration-test</module>
     </modules>
 
