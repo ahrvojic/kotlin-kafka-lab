@@ -25,7 +25,7 @@ When integrating multiple complex technologies, especially in a secondary langua
 * **spring-streams**
 
 ## Integration Testing
-The **integration-tests** module is organized by technology stack, with tests implemented using [Testcontainers](https://testcontainers.org) and [JUnit](https://junit.org).
+The **integration-test** module is organized by technology stack, with tests implemented using [Testcontainers](https://testcontainers.org) and [JUnit](https://junit.org).
 
 ## Requirements
 
