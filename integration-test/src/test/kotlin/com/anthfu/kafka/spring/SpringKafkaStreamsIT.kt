@@ -20,9 +20,9 @@ import kotlin.test.assertEquals
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SpringKafkaStreamsIT {
     private val kafkaImage = DockerImageName.parse("confluentinc/cp-kafka:6.1.1")
-    private val producerImage = DockerImageName.parse("spring-producer:1.0-SNAPSHOT")
-    private val consumerImage = DockerImageName.parse("spring-consumer:1.0-SNAPSHOT")
-    private val streamsImage = DockerImageName.parse("spring-streams:1.0-SNAPSHOT")
+    private val producerImage = DockerImageName.parse("spring-producer:1.0.0-SNAPSHOT")
+    private val consumerImage = DockerImageName.parse("spring-consumer:1.0.0-SNAPSHOT")
+    private val streamsImage = DockerImageName.parse("spring-streams:1.0.0-SNAPSHOT")
 
     private val logger = LoggerFactory.getLogger(javaClass)
     private val kafkaNetwork = Network.newNetwork()

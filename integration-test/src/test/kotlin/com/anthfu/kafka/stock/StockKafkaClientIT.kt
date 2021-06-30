@@ -16,8 +16,8 @@ import org.testcontainers.utility.DockerImageName
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StockKafkaClientIT {
     private val kafkaImage = DockerImageName.parse("confluentinc/cp-kafka:6.1.1")
-    private val producerImage = DockerImageName.parse("stock-producer:1.0-SNAPSHOT")
-    private val consumerImage = DockerImageName.parse("stock-consumer:1.0-SNAPSHOT")
+    private val producerImage = DockerImageName.parse("stock-producer:1.0.0-SNAPSHOT")
+    private val consumerImage = DockerImageName.parse("stock-consumer:1.0.0-SNAPSHOT")
 
     private val logger = LoggerFactory.getLogger(javaClass)
     private val kafkaNetwork = Network.newNetwork()

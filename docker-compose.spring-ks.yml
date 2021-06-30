@@ -8,5 +8,5 @@ services:
       - SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC=spring-stream-in
 
   spring-streams:
-    image: spring-streams:1.0-SNAPSHOT
+    image: spring-streams:1.0.0-SNAPSHOT
     network_mode: host

@@ -8,5 +8,5 @@ services:
       - SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC=stock-stream-in
 
   stock-streams:
-    image: stock-streams:1.0-SNAPSHOT
+    image: stock-streams:1.0.0-SNAPSHOT
     network_mode: host
