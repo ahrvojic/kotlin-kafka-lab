@@ -1,9 +1,10 @@
 package com.anthfu.kafka.stock
 
+import com.anthfu.kafka.util.ConsumerContainer
+import com.anthfu.kafka.util.ProducerContainer
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.slf4j.LoggerFactory
-import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.KafkaContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.output.Slf4jLogConsumer
@@ -29,23 +30,21 @@ class StockKafkaClientIT {
         .withNetworkAliases("kafka")
 
     @Container
-    private val consumer = GenericContainer<Nothing>(consumerImage).apply {
-        withNetwork(kafkaNetwork)
-        withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
-        withEnv("SPRING_KAFKA_CONSUMER_AUTOOFFSETRESET", "earliest")
-        withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "stock-consumers")
-        withLogConsumer(Slf4jLogConsumer(logger).withPrefix("stock-consumer"))
-        dependsOn(kafka)
-    }
+    private val consumer = ConsumerContainer(consumerImage)
+        .withNetwork(kafkaNetwork)
+        .withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
+        .withEnv("SPRING_KAFKA_CONSUMER_AUTOOFFSETRESET", "earliest")
+        .withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "stock-consumers")
+        .withLogConsumer(Slf4jLogConsumer(logger).withPrefix("stock-consumer"))
+        .dependsOn(kafka)
 
     @Container
-    private val producer = GenericContainer<Nothing>(producerImage).apply {
-        withNetwork(kafkaNetwork)
-        withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
-        withLogConsumer(Slf4jLogConsumer(logger).withPrefix("stock-producer"))
-        withStartupCheckStrategy(IndefiniteWaitOneShotStartupCheckStrategy())
-        dependsOn(consumer)
-    }
+    private val producer = ProducerContainer(producerImage)
+        .withNetwork(kafkaNetwork)
+        .withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
+        .withLogConsumer(Slf4jLogConsumer(logger).withPrefix("stock-producer"))
+        .withStartupCheckStrategy(IndefiniteWaitOneShotStartupCheckStrategy())
+        .dependsOn(consumer)
 
     @Test
     fun `Verify message production and consumption`() {
