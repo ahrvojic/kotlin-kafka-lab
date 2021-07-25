@@ -9,7 +9,6 @@ import org.testcontainers.containers.KafkaContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.output.Slf4jLogConsumer
 import org.testcontainers.containers.startupcheck.IndefiniteWaitOneShotStartupCheckStrategy
-import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
@@ -39,7 +38,6 @@ class SpringKafkaStreamsIT {
         withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "spring-consumers")
         withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "spring-stream-out")
         withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-consumer"))
-        waitingFor(Wait.forLogMessage(".*partitions assigned.*\\n", 1))
         dependsOn(kafka)
     }
 
@@ -71,7 +69,7 @@ class SpringKafkaStreamsIT {
         consumer.start()
         streams.start()
 
-        TimeUnit.SECONDS.sleep(10)
+        TimeUnit.SECONDS.sleep(30)
 
         assert(producer.logs.contains("Sent: 999"))
         assert(streams.logs.contains("Processed: 999 -> 1000"))

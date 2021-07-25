@@ -11,6 +11,7 @@ import org.testcontainers.containers.startupcheck.IndefiniteWaitOneShotStartupCh
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
+import java.util.concurrent.TimeUnit
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -48,6 +49,7 @@ class StockKafkaClientIT {
 
     @Test
     fun `Verify message production and consumption`() {
+        TimeUnit.SECONDS.sleep(30)
         assert(producer.logs.contains("Sent: 999"))
         assert(consumer.logs.contains("Received: 999"))
     }

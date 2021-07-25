@@ -8,10 +8,10 @@ import org.testcontainers.containers.KafkaContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.containers.output.Slf4jLogConsumer
 import org.testcontainers.containers.startupcheck.IndefiniteWaitOneShotStartupCheckStrategy
-import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
+import java.util.concurrent.TimeUnit
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -35,7 +35,6 @@ class SpringKafkaClientIT {
         withEnv("SPRING_KAFKA_CONSUMER_AUTOOFFSETRESET", "earliest")
         withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "spring-consumers")
         withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-consumer"))
-        waitingFor(Wait.forLogMessage(".*partitions assigned.*\\n", 1))
         dependsOn(kafka)
     }
 
@@ -50,6 +49,7 @@ class SpringKafkaClientIT {
 
     @Test
     fun `Verify message production and consumption`() {
+        TimeUnit.SECONDS.sleep(30)
         assert(producer.logs.contains("Sent: 999"))
         assert(consumer.logs.contains("Received: 999"))
     }
