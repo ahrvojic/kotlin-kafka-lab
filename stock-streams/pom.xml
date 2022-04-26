@@ -19,7 +19,7 @@
     <properties>
         <java.version>11</java.version>
         <kafka.version>2.6.1</kafka.version>
-        <kotlin.version>1.4.32</kotlin.version>
+        <kotlin.version>1.6.21</kotlin.version>
     </properties>
 
     <dependencies>

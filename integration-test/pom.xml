@@ -11,10 +11,10 @@
 
     <properties>
         <java.version>11</java.version>
-        <junit.version>5.7.1</junit.version>
-        <kotlin.version>1.4.32</kotlin.version>
-        <logback.version>1.2.3</logback.version>
-        <testcontainers.version>1.15.3</testcontainers.version>
+        <junit.version>5.8.2</junit.version>
+        <kotlin.version>1.6.21</kotlin.version>
+        <logback.version>1.2.11</logback.version>
+        <testcontainers.version>1.17.1</testcontainers.version>
     </properties>
 
     <dependencies>

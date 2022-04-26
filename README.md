@@ -29,7 +29,8 @@ The **integration-test** module is organized by technology stack, with tests imp
 
 ## Requirements
 
-* A full local installation of [Docker Desktop](https://www.docker.com/products/docker-desktop). It includes Docker Compose if you'd like to run services standalone.
+* Docker
+* Docker Compose if running standalone
 * JDK 11+
 
 ## Build
