@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component
 
 @Component
 class SpringConsumer {
-    private val logger = LoggerFactory.getLogger(javaClass)
+  private val logger = LoggerFactory.getLogger(javaClass)
 
-    @KafkaListener(topics = ["#{'\${spring.kafka.template.default-topic}'}"])
-    fun receive(message: String) {
-        logger.info("Received: $message")
-    }
+  @KafkaListener(topics = ["#{'\${spring.kafka.template.default-topic}'}"])
+  fun receive(message: String) {
+    logger.info("Received: $message")
+  }
 }

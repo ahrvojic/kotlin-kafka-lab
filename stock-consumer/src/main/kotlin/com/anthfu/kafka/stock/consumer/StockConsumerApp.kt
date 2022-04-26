@@ -9,5 +9,5 @@ import org.springframework.scheduling.annotation.EnableScheduling
 class StockConsumerApp
 
 fun main(args: Array<String>) {
-    runApplication<StockConsumerApp>(*args)
+  runApplication<StockConsumerApp>(*args)
 }

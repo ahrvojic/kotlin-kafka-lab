@@ -20,58 +20,65 @@ import kotlin.test.assertEquals
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SpringKafkaStreamsIT {
-    private val kafkaImage = DockerImageName.parse("confluentinc/cp-kafka:6.1.1")
-    private val producerImage = DockerImageName.parse("spring-producer:1.0.0-SNAPSHOT")
-    private val consumerImage = DockerImageName.parse("spring-consumer:1.0.0-SNAPSHOT")
-    private val streamsImage = DockerImageName.parse("spring-streams:1.0.0-SNAPSHOT")
+  private val kafkaImage =
+      DockerImageName.parse("confluentinc/cp-kafka:6.1.1")
+  private val producerImage =
+      DockerImageName.parse("spring-producer:1.0.0-SNAPSHOT")
+  private val consumerImage =
+      DockerImageName.parse("spring-consumer:1.0.0-SNAPSHOT")
+  private val streamsImage =
+      DockerImageName.parse("spring-streams:1.0.0-SNAPSHOT")
 
-    private val logger = LoggerFactory.getLogger(javaClass)
-    private val kafkaNetwork = Network.newNetwork()
+  private val logger = LoggerFactory.getLogger(javaClass)
+  private val kafkaNetwork = Network.newNetwork()
 
-    @Container
-    private val kafka = KafkaContainer(kafkaImage)
-        .withNetwork(kafkaNetwork)
-        .withNetworkAliases("kafka")
+  @Container
+  private val kafka = KafkaContainer(kafkaImage)
+      .withNetwork(kafkaNetwork)
+      .withNetworkAliases("kafka")
 
-    private val consumer = ConsumerContainer(consumerImage)
-        .withNetwork(kafkaNetwork)
-        .withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
-        .withEnv("SPRING_KAFKA_CONSUMER_AUTOOFFSETRESET", "earliest")
-        .withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "spring-consumers")
-        .withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "spring-stream-out")
-        .withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-consumer"))
-        .dependsOn(kafka)
+  private val consumer = ConsumerContainer(consumerImage)
+      .withNetwork(kafkaNetwork)
+      .withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
+      .withEnv("SPRING_KAFKA_CONSUMER_AUTOOFFSETRESET", "earliest")
+      .withEnv("SPRING_KAFKA_CONSUMER_GROUPID", "spring-consumers")
+      .withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "spring-stream-out")
+      .withLogConsumer(Slf4jLogConsumer(logger)
+          .withPrefix("spring-consumer"))
+      .dependsOn(kafka)
 
-    private val producer = ProducerContainer(producerImage)
-        .withNetwork(kafkaNetwork)
-        .withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
-        .withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "spring-stream-in")
-        .withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-producer"))
-        .withStartupCheckStrategy(IndefiniteWaitOneShotStartupCheckStrategy())
-        .dependsOn(kafka)
+  private val producer = ProducerContainer(producerImage)
+      .withNetwork(kafkaNetwork)
+      .withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
+      .withEnv("SPRING_KAFKA_TEMPLATE_DEFAULTTOPIC", "spring-stream-in")
+      .withLogConsumer(
+          Slf4jLogConsumer(logger).withPrefix("spring-producer"))
+      .withStartupCheckStrategy(IndefiniteWaitOneShotStartupCheckStrategy())
+      .dependsOn(kafka)
 
-    private val streams = StreamsContainer(streamsImage)
-        .withNetwork(kafkaNetwork)
-        .withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
-        .withLogConsumer(Slf4jLogConsumer(logger).withPrefix("spring-streams"))
-        .dependsOn(consumer)
+  private val streams = StreamsContainer(streamsImage)
+      .withNetwork(kafkaNetwork)
+      .withEnv("SPRING_KAFKA_BOOTSTRAPSERVERS", "kafka:9092")
+      .withLogConsumer(
+          Slf4jLogConsumer(logger).withPrefix("spring-streams"))
+      .dependsOn(consumer)
 
-    @Test
-    fun `Verify message production and consumption`() {
-        val t1 = kafka.execInContainer(*createTopicCmd("spring-stream-in"))
-        assertEquals(0, t1.exitCode)
+  @Test
+  fun `Verify message production and consumption`() {
+    val t1 = kafka.execInContainer(*createTopicCmd("spring-stream-in"))
+    assertEquals(0, t1.exitCode)
 
-        val t2 = kafka.execInContainer(*createTopicCmd("spring-stream-out"))
-        assertEquals(0, t2.exitCode)
+    val t2 = kafka.execInContainer(*createTopicCmd("spring-stream-out"))
+    assertEquals(0, t2.exitCode)
 
-        producer.start()
-        consumer.start()
-        streams.start()
+    producer.start()
+    consumer.start()
+    streams.start()
 
-        TimeUnit.SECONDS.sleep(30)
+    TimeUnit.SECONDS.sleep(30)
 
-        assert(producer.logs.contains("Sent: 999"))
-        assert(streams.logs.contains("Processed: 999 -> 1000"))
-        assert(consumer.logs.contains("Received: 1000"))
-    }
+    assert(producer.logs.contains("Sent: 999"))
+    assert(streams.logs.contains("Processed: 999 -> 1000"))
+    assert(consumer.logs.contains("Received: 1000"))
+  }
 }

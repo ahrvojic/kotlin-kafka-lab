@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component
 
 @Component
 class SpringProducer(private val kafkaTemplate: KafkaTemplate<String, String>) {
-    private val logger = LoggerFactory.getLogger(javaClass)
+  private val logger = LoggerFactory.getLogger(javaClass)
 
-    fun send(message: String) {
-        kafkaTemplate.sendDefault(message) // TODO: Callback
-        logger.info("Sent: $message")
-    }
+  fun send(message: String) {
+    kafkaTemplate.sendDefault(message) // TODO: Callback
+    logger.info("Sent: $message")
+  }
 }

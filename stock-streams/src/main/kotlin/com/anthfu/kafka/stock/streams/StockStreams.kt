@@ -17,29 +17,30 @@ import org.springframework.kafka.config.KafkaStreamsConfiguration
 @Configuration
 @EnableKafkaStreams
 class StockStreams(env: Environment, private val conf: KafkaProperties) {
-    private val logger = LoggerFactory.getLogger(javaClass)
+  private val logger = LoggerFactory.getLogger(javaClass)
 
-    private val topicIn = env.getProperty("app.topic-in")
-    private val topicOut = env.getProperty("app.topic-out")
+  private val topicIn = env.getProperty("app.topic-in")
+  private val topicOut = env.getProperty("app.topic-out")
 
-    private val stringSerde = Serdes.String()
+  private val stringSerde = Serdes.String()
 
-    @Bean(name = [KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME])
-    fun kStreamsConfig(): KafkaStreamsConfiguration {
-        return KafkaStreamsConfiguration(conf.buildStreamsProperties())
-    }
+  @Bean(name =
+  [KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME])
+  fun kStreamsConfig(): KafkaStreamsConfiguration {
+    return KafkaStreamsConfiguration(conf.buildStreamsProperties())
+  }
 
-    @Bean
-    fun kStream(builder: StreamsBuilder): KStream<String, String> {
-        val stream = builder.stream(topicIn, Consumed.with(stringSerde, stringSerde))
+  @Bean
+  fun kStream(builder: StreamsBuilder): KStream<String, String> {
+    val stream =
+        builder.stream(topicIn, Consumed.with(stringSerde, stringSerde))
 
-        stream.mapValues { v ->
-            val message = "${v.toInt() + 1}"
-            logger.info("Processed: $v -> $message")
-            message
-        }
-        .to(topicOut, Produced.with(stringSerde, stringSerde))
+    stream.mapValues { v ->
+      val message = "${v.toInt() + 1}"
+      logger.info("Processed: $v -> $message")
+      message
+    }.to(topicOut, Produced.with(stringSerde, stringSerde))
 
-        return stream
-    }
+    return stream
+  }
 }

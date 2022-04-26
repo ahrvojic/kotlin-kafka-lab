@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class StockStreamsApp
 
 fun main(args: Array<String>) {
-    runApplication<StockStreamsApp>(*args)
+  runApplication<StockStreamsApp>(*args)
 }

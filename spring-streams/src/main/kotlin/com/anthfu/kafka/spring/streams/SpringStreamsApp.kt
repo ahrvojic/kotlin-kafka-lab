@@ -9,18 +9,19 @@ import java.util.function.Function
 
 @SpringBootApplication
 class SpringStreamsApp {
-    private val logger = LoggerFactory.getLogger(javaClass)
+  private val logger = LoggerFactory.getLogger(javaClass)
 
-    @Bean
-    fun increment(): Function<KStream<String, String>, KStream<String, String>> = Function {
-        input -> input.mapValues { v ->
-            val message = "${v.toInt() + 1}"
-            logger.info("Processed: $v -> $message")
-            message
+  @Bean
+  fun increment(): Function<KStream<String, String>, KStream<String, String>> =
+      Function { input ->
+        input.mapValues { v ->
+          val message = "${v.toInt() + 1}"
+          logger.info("Processed: $v -> $message")
+          message
         }
-    }
+      }
 }
 
 fun main(args: Array<String>) {
-    runApplication<SpringStreamsApp>(*args)
+  runApplication<SpringStreamsApp>(*args)
 }

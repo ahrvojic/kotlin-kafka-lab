@@ -12,8 +12,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
     initializers = [ConfigDataApplicationContextInitializer::class]
 )
 class SpringProducerAppTests {
-    @Test
-    fun contextLoads() {
-        // Ensure service starts up properly
-    }
+  @Test
+  fun contextLoads() {
+    // Ensure service starts up properly
+  }
 }
